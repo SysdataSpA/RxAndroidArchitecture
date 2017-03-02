@@ -1,0 +1,174 @@
+/*
+ * Copyright (C) 2017 Sysdata S.p.A.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven { url 'https://dl.bintray.com/sysdata/maven' }
+    }
+
+    dependencies {
+        classpath "me.tatarka:gradle-retrolambda:3.2.4"
+    }
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven { url 'https://dl.bintray.com/sysdata/maven' }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        applicationId "it.sysdata.rxandroidarchitecture"
+        minSdkVersion 18
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+            keyAlias "androiddebugkey"
+            storePassword "android"
+            keyPassword "android"
+        }
+    }
+
+    buildTypes {
+        release {
+            // TODO set here the signing configuration of release build type
+            signingConfig signingConfigs.debug
+
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard/proguard-baseandroid-rxeventdispatcher.pro',
+                    'proguard/proguard-gson.pro',
+                    'proguard/proguard-retrofit.pro',
+                    'proguard/proguard-rx.pro',
+                    'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+
+    lintOptions {
+        abortOnError false
+        disable 'InvalidPackage'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    /*
+    The android.jar file that is used to run unit tests does not contain any actual code
+    that is provided by the Android system image on real devices.
+    Instead, all methods throw exceptions (by default).
+    This is to make sure your unit tests only test your code and do not depend on any particular
+    behaviour of the Android platform (that you have not explicitly mocked e.g. using Mockito).
+    If that proves problematic, you can add the snippet below
+    to your build.gradle to change this behavior:
+     */
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+}
+
+dependencies {
+
+    def baseAndroidNavigationVersion = "0.0.6"
+    def baseAndroidVersion = "0.0.14"
+    def androidSupportVersion = "25.2.0"
+
+    def rxAndroidVersion = "1.2.1"
+    def rxJavaVersion = "1.2.6"
+
+    def retrofitVersion = "2.1.0"
+    def okhttpLoggingInterceptorVersion = "3.6.0"
+
+    def daggerVersion = "2.9"
+    def javaxAnnotationVersion = "10.0-b28"
+
+    def sld4jVersion = "1.7.22"
+    def logbackVersion = "1.1.1-6"
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // JUnit test suite
+    testCompile 'junit:junit:4.12'
+    // UI testing with Espresso
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    // Android Support Libraries
+    compile "com.android.support:appcompat-v7:$androidSupportVersion"
+    compile "com.android.support:support-v4:$androidSupportVersion"
+
+    // Sysdata Spa baseandroid libraries
+    compile "com.baseandroid:baseandroid-navigation:$baseAndroidNavigationVersion"
+    compile "com.baseandroid:baseandroid-core:$baseAndroidVersion"
+    compile "com.baseandroid:baseandroid-busadapter:$baseAndroidVersion"
+    compile "com.baseandroid:baseandroid-coordinatoradapter:$baseAndroidVersion"
+    compile "com.baseandroid:baseandroid-repositoryadapter:$baseAndroidVersion"
+    compile "com.baseandroid:baseandroid-rxeventdispatcher:$baseAndroidVersion"
+    compile "com.baseandroid:baseandroid-rxcoordinator:$baseAndroidVersion"
+    compile "com.baseandroid:baseandroid-rxrepository:$baseAndroidVersion"
+
+    // Dagger
+    compile "com.google.dagger:dagger:$daggerVersion"
+    apt "com.google.dagger:dagger-compiler:$daggerVersion"
+    provided "org.glassfish:javax.annotation:$javaxAnnotationVersion"
+
+    // RxAndroid + RxJava
+    compile "io.reactivex:rxandroid:$rxAndroidVersion"
+    // Because RxAndroid releases are few and far between, it is recommended you also
+    // explicitly depend on RxJava's latest version for bug fixes and new features.
+    compile "io.reactivex:rxjava:$rxJavaVersion"
+
+    // Retrofit 2
+    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    compile "com.squareup.okhttp3:logging-interceptor:$okhttpLoggingInterceptorVersion"
+
+    // Logback
+    compile "org.slf4j:slf4j-api:$sld4jVersion"
+    compile "com.github.tony19:logback-android-core:$logbackVersion"
+    compile "com.github.tony19:logback-android-classic:$logbackVersion"
+
+
+}
