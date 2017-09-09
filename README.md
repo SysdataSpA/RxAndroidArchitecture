@@ -29,6 +29,22 @@ The communications among them take place by means of an EventDispatcher.
 
 #### 1.2.2 Coordinator Manager and Coordinators
 
+A **Coordinator** can be thought as an advanced version of the **Presenter** of the MVP model. Compared to it, the coordinator offers the following advantages:
+
+* reference decoupling from the views
+* allows for multi-layers inner structure 
+* TDD oriented
+
+The **Coordinator** - **UI** communication is based on an **Events** exchange mechanism and the events are carried by an **EventBus** (here implemented by the **EventDispatcher** object).  
+
+A single coordinator can coordinate multiple business logic activities that are executed by objects of type **UseCase**.
+
+The **Coordinator** object is heavly based on Reactive Programming and it associates a **Subscriber** to the UseCases. A Subscriber is an object that is able to handle results from UseCases. 
+
+Moreover the a **Coordinator** handles answers from subscribers and is able to propagate them to the views by means of the mechanism explaind before. 
+
+The **CoordinatorManager** handles the initializations of the coordinators. It stores them into a map. In such a paradigm the coordinators are treated as singletons.
+
 #### 1.2.3 EventDispatcher
 
 #### 1.2.4
