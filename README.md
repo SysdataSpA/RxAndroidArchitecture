@@ -1,10 +1,20 @@
 # RxAndroidArchitecture
-A powerful android reactive Architecture
+A powerful android rx-active Architecture
 
 ## 1. A Brief Introduciton
 The app is a sample project that shows how to implement the RxAndroidArchitecture into your Android app.
 
 ### 1.1 What is RxAndroidArchitecture?
+It is a clean architecture that allows a real disentangle of the UI components from the business logic. 
+
+The main components are:
+
+* UI: activitities, fragments, views
+* Coordinator Manager and Coordinators
+* Use Cases: atomic units of business logic
+* Repository: everything that manages data
+* Events Layer: the main actor that allows to abstract the UI layer from the lower ones (???... chiedi conferma)
+
 
 ### 1.2 RxAndroidArchitecture main components
 
