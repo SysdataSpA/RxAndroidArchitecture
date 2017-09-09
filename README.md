@@ -11,20 +11,18 @@ The main components are:
 
 * UI
 * Coordinator Manager and Coordinators
-* UseCase
-* Repositories
 * EventDispatcher
+* UseCase
+* Repository
 
 ### 1.2 RxAndroidArchitecture main components
 
 #### 1.2.1 UI
 
 The UI layer of the architecture comprises activities, fragments and views. 
-
 The role of an activity is to coordinate the navigations by managing widgets and screens. 
 
 Fragments are instead the components that request and use the coordinators requesting them to the Coordinator Manager. Each fragment can use multiple coordinators and one coodinators can be used by several fragments.
-
 The communications among them take place by means of an EventDispatcher.
 
 #### 1.2.2 Coordinator Manager and Coordinators
@@ -36,20 +34,22 @@ A **Coordinator** can be thought as an advanced version of the **Presenter** of 
 * TDD oriented
 
 The **Coordinator** - **UI** communication is based on an **Events** exchange mechanism and the events are carried by an **EventBus** (here implemented by the **EventDispatcher** object).  
-
 A single coordinator can coordinate multiple business logic activities that are executed by objects of type **UseCase**.
 
 The **Coordinator** object is heavly based on Reactive Programming and it associates a **Subscriber** to the UseCases. A Subscriber is an object that is able to handle results from UseCases. 
-
 Moreover the a **Coordinator** handles answers from subscribers and is able to propagate them to the views by means of the mechanism explaind before. 
 
 The **CoordinatorManager** handles the initializations of the coordinators. It stores them into a map. In such a paradigm the coordinators are treated as singletons.
 
 #### 1.2.3 EventDispatcher
 
-#### 1.2.4
+The **EventDispatcher** is an EventBus made of two RxBuses: one for the UI thread and another one for asyncronous operations (network calls, CRUD oprations, etc).
 
-#### 1.2.5
+The **Event** annotation identifies the classes that defines the type of object that will be sent through the EventDispatcher.post(Object o) method.
+
+#### 1.2.4 UseCase
+
+#### 1.2.5 Repository
 
 
 
