@@ -48,11 +48,10 @@ The **EventDispatcher** is an EventBus made of two RxBuses: one for the UI threa
 The **Event** annotation identifies the classes that defines the type of object that will be sent through the EventDispatcher.post(Object o) method.
 
 #### 1.2.4 UseCase
+A **UseCase** is a wrapper for a small business logic operation. A **UseCase** can use one or more **Repository** to get or write the requested data, then it returns the response event.
 
 #### 1.2.5 Repository
-
-
-
+A **Repository** handles the process of saving or retrieving data from a datasource, it is managed by one or more **UseCase**.
 
 ### 1.3 Major Classes
 
